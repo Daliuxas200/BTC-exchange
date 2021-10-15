@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { formatNumber, parseRates } from '../helperFunctions';
 import { FaPlus, FaTimes, FaEquals } from 'react-icons/fa';
 import { HiRefresh } from 'react-icons/hi';
+
+/**
+ * TODO For testing only, remove later
+ */
+import testData from '../testingData';
 
 const Calculator = () => {
   const [rates, setRates] = useState([]);
@@ -13,12 +19,14 @@ const Calculator = () => {
   const fetchRates = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        'https://api.coindesk.com/v1/bpi/currentprice.json'
-      );
-      const data = await response.json();
+      //   const response = await fetch(
+      //     'https://api.coindesk.com/v1/bpi/currentprice.json'
+      //   );
+      //   const data = await response.json();
+      const data = testData;
       setLoading(false);
-      setRates(data);
+      setRates(parseRates(data));
+      console.log(data);
     } catch (error) {
       setLoading(false);
       console.log(error);
