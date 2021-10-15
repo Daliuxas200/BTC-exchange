@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { FaMinus, FaPlus, FaTimes, FaEquals } from 'react-icons/fa';
+import Header from './components/Header';
+import { FaPlus, FaTimes, FaEquals } from 'react-icons/fa';
 import { HiRefresh } from 'react-icons/hi';
 
 const App = () => {
   const [rates, setRates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reloadTrigger, setReloadTrigger] = useState(false);
+  const [minimized, setMinimized] = useState(false);
 
   /*
    * Function for fetching the rates and triggering the loading State.
@@ -46,18 +48,8 @@ const App = () => {
 
   return (
     <div className="page">
-      <div className="calculator closed">
-        <header className="calculator__header">
-          <h1 className="calculator__title">BTC Exchange</h1>
-          <span className="calculator__toggle">
-            <FaMinus />
-          </span>
-          <h2 className="calculator__info">
-            Input amount in BTC and get converted amount in USD, GBP or EUR. Add
-            or remove currencies for your convenience. Conversion rate updated
-            every 60s.
-          </h2>
-        </header>
+      <div className={`calculator ${minimized ? 'closed' : ''}`}>
+        <Header minimized={minimized} toggleMinimized={setMinimized} />
         <main className="calculator__main">
           <div className="calculator__main__left">
             <div className="input">
