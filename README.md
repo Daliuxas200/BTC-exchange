@@ -24,6 +24,6 @@ npm run build
 
 ## Styling
 
-The Web Aplication was designed and its CSS programmed by me, only using **react-icons** library to get some SVG icons. I prefer writing my own styles as it provides a more lightweight package and allows for more creativity.
+The Web Aplication was designed and its CSS programmed in house, only using **react-icons** library to get SVG icons. I prefer writing my own styles as it provides a more lightweight package and allows for more creativity.
 
 Full power of SCSS was utilised including file imports, media queries, mixins and variables.

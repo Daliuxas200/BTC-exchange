@@ -1,21 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaMinus, FaPlus, FaTimes, FaEquals } from 'react-icons/fa';
 import { HiRefresh } from 'react-icons/hi';
 
 const App = () => {
+  const [rates, setRates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [reloadTrigger, setReloadTrigger] = useState(false);
+
+  /*
+   * Function for fetching the rates and triggering the loading State.
+   */
+  const fetchRates = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        'https://api.coindesk.com/v1/bpi/currentprice.json'
+      );
+      const data = await response.json();
+      setLoading(false);
+      setRates(data);
+    } catch {
+      setLoading(false);
+      alert('errorzzzo');
+    }
+  };
+
+  /*
+   * Function for switching the reload state, which triggers the useEffect to fetch new rates and resets the interval counter.
+   */
+  const reload = () => setReloadTrigger(!reloadTrigger);
+
+  /*
+   * Loads initial Rates after first render, sets interval for data refetch. Can be reset manually by triggering the reloadTrigger state.
+   */
+  useEffect(() => {
+    fetchRates();
+    /**
+     * TODO timer set to 10 minutes so i dont get my IP banned, reset back to 1min before final deployment
+     */
+    const updater = setInterval(fetchRates, 600000);
+    return () => {
+      clearInterval(updater);
+    };
+  }, [reloadTrigger]);
+
   return (
     <div className="page">
-      <div className="calculator">
+      <div className="calculator closed">
         <header className="calculator__header">
           <h1 className="calculator__title">BTC Exchange</h1>
           <span className="calculator__toggle">
             <FaMinus />
           </span>
-          <desc className="calculator__info">
+          <h2 className="calculator__info">
             Input amount in BTC and get converted amount in USD, GBP or EUR. Add
             or remove currencies for your convenience. Conversion rate updated
             every 60s.
-          </desc>
+          </h2>
         </header>
         <main className="calculator__main">
           <div className="calculator__main__left">

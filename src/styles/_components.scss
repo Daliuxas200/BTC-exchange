@@ -8,6 +8,11 @@
   box-shadow: 2px 2px 5px 2px $color-secondary-dark;
   display: flex;
   flex-wrap: wrap;
+  overflow-y: hidden;
+  transition: 0.5s;
+  &.closed {
+    height: 115px;
+  }
 
   @include respond(medium) {
     width: 100%;
@@ -24,7 +29,7 @@
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 35px;
     margin-bottom: 20px;
   }
 
