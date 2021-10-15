@@ -1,0 +1,9 @@
+// Wrapper for stylised block elements
+
+.wrapper {
+  display: block;
+  background-color: $color-acent-light;
+  border-radius: 5px;
+  color: $color-secondary;
+  box-shadow: $shadow-small;
+}
