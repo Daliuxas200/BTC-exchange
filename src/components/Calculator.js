@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { formatNumber, parseRates } from '../helperFunctions';
+import Details from './Details';
+import { parseRates } from '../helperFunctions';
 import { FaPlus, FaTimes, FaEquals } from 'react-icons/fa';
-import { HiRefresh } from 'react-icons/hi';
 
 /**
  * TODO For testing only, remove later
@@ -10,6 +10,7 @@ import testData from '../testingData';
 
 const Calculator = () => {
   const [rates, setRates] = useState([]);
+  const [trackedRates, setTrackedRates] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reloadTrigger, setReloadTrigger] = useState(false);
 
@@ -24,9 +25,9 @@ const Calculator = () => {
       //   );
       //   const data = await response.json();
       const data = testData;
+      const parsedRates = parseRates(data);
+      setRates(parsedRates);
       setLoading(false);
-      setRates(parseRates(data));
-      console.log(data);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -52,6 +53,16 @@ const Calculator = () => {
     };
   }, [reloadTrigger]);
 
+  /*
+   * Triggers when Rates update to check if Tracked rates have been set
+   * If not, sets all as Tracked, only to later be updated manually
+   */
+  useEffect(() => {
+    if (rates.length && trackedRates === false) {
+      setTrackedRates(rates.map((rate) => rate.code));
+    }
+  }, [rates]);
+
   return (
     <main className="calculator">
       <div className="calculator__left">
@@ -63,25 +74,12 @@ const Calculator = () => {
           />
           <span className="input__indicator">BTC</span>
         </div>
-        <div className="details wrapper">
-          <h3 className="details__title">BTC Exchange Rates</h3>
-          <h4 className="details__subtitle">
-            <span> Last updated 21:41 </span>
-            <HiRefresh />
-          </h4>
-          {/* <p className="details__pair">
-          <span> EUR </span> <span> 15.418465681</span>
-        </p>
-        <p className="details__pair">
-          <span> GBP </span> <span> 4615.4681</span>
-        </p>
-        <p className="details__pair">
-          <span> USD </span> <span> 465415.481</span>
-        </p> */}
-          <div className="loader">
-            <HiRefresh className="loader__icon" />
-          </div>
-        </div>
+        <Details
+          loading={loading}
+          reload={reload}
+          rates={rates}
+          trackedRates={trackedRates}
+        />
       </div>
       <div className="calculator__center">
         <FaEquals />
