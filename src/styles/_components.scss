@@ -1,5 +1,5 @@
 // Main Calculator wrapper and its sections
-.calculator {
+.modal {
   background-color: $color-primary;
   border-radius: 5px;
   padding: 40px;
@@ -79,23 +79,24 @@
   &__info {
     flex: 1 0 100%;
   }
+}
 
-  &__main {
-    display: grid;
-    grid-template-columns: 1fr 30px 1fr;
-    column-gap: 10px;
-    @include respond(small) {
-      grid-template-columns: 1fr;
-    }
+// Exchange calculator
+.calculator {
+  display: grid;
+  grid-template-columns: 1fr 30px 1fr;
+  column-gap: 10px;
+  @include respond(small) {
+    grid-template-columns: 1fr;
+  }
 
-    &__center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 45px;
-      width: 100%;
-      font-size: 20px;
-    }
+  &__center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    width: 100%;
+    font-size: 20px;
   }
 }
 
