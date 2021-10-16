@@ -7,7 +7,7 @@ import { FaEquals } from 'react-icons/fa';
 /**
  * ! For testing only
  */
-import testData from '../testingData';
+// import testData from '../testingData';
 
 const Calculator = () => {
   const [rates, setRates] = useState([]);
