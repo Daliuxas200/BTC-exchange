@@ -58,6 +58,11 @@ const Calculator = () => {
     setTrackedRates(newTrackedRates);
   };
 
+  const trackRate = (code) => {
+    const newTrackedRates = [...trackedRates, code];
+    setTrackedRates(newTrackedRates);
+  };
+
   /*
    * Loads initial Rates after first render, sets interval for data refetch. Can be reset manually by triggering the reloadTrigger state.
    */
@@ -111,6 +116,7 @@ const Calculator = () => {
           rates={rates}
           trackedRates={trackedRates}
           untrackRate={untrackRate}
+          trackRate={trackRate}
         />
       </div>
     </main>

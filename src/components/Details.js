@@ -4,16 +4,17 @@ import { HiRefresh } from 'react-icons/hi';
 import { formatNumber } from '../helperFunctions';
 
 const Details = ({ loading, rates, reload, trackedRates }) => {
-  const filteredRates = rates.filter(
-    (rate) => trackedRates && trackedRates.includes(rate.code)
-  );
-
-  const detailsList = filteredRates.map((rate) => (
-    <p key={rate.code} className="details__pair">
-      <span>{rate.code}</span>
-      <span>{formatNumber(rate.rate_float, rate.code)}</span>
-    </p>
-  ));
+  const detailsList =
+    trackedRates &&
+    trackedRates.map((code) => {
+      const rate = rates.find((r) => r.code === code);
+      return (
+        <p key={rate.code} className="details__pair">
+          <span>{rate.code}</span>
+          <span>{formatNumber(rate.rate_float, rate.code)}</span>
+        </p>
+      );
+    });
 
   return (
     <div className="details wrapper">

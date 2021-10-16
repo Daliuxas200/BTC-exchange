@@ -1,35 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import { formatNumber } from '../helperFunctions';
 
-const Results = ({ input, rates, trackedRates, untrackRate }) => {
-  const resultsList = rates
-    .filter((rate) => trackedRates && trackedRates.includes(rate.code))
-    .map((rate) => {
+const Results = ({ input, rates, trackedRates, untrackRate, trackRate }) => {
+  const [dropdownToggle, setDropdownToggle] = useState(false);
+
+  const trackedList =
+    trackedRates &&
+    trackedRates.map((code) => {
+      const rate = rates.find((r) => r.code === code);
       return (
         <li key={rate.code} className="wrapper results__item">
           <span>{formatNumber(input * rate.rate_float, rate.code)}</span>
           <span>{rate.code}</span>
           <FaTimes
             className="results__item__remove"
-            onClick={() => untrackRate(rate.code)}
+            onClick={() => {
+              untrackRate(rate.code);
+              setDropdownToggle(false);
+            }}
           />
+        </li>
+      );
+    });
+
+  const untrackedList = rates
+    .filter(
+      (rate) => trackedRates !== false && !trackedRates.includes(rate.code)
+    )
+    .map((rate) => {
+      return (
+        <li
+          className="dropdown__list__item"
+          key={rate.code}
+          onClick={() => {
+            trackRate(rate.code);
+            setDropdownToggle(false);
+          }}
+        >
+          {rate.code}
         </li>
       );
     });
 
   return (
     <>
-      <ul className="results">{resultsList}</ul>
-      <div className="dropdown">
-        <button className="wrapper dropdown__button">
-          <FaPlus />
-        </button>
-        {/* <ul className="dropdown__list">
-          <li className="dropdown__list__item">USD</li>
-          <li className="dropdown__list__item">EUR</li>
-        </ul> */}
-      </div>
+      <ul className="results">{trackedList}</ul>
+      {!!untrackedList.length && (
+        <div className="dropdown">
+          <button
+            className="wrapper dropdown__button"
+            onClick={() => setDropdownToggle(true)}
+          >
+            <FaPlus />
+          </button>
+          <ul className={`dropdown__list ${dropdownToggle ? 'active' : ''}`}>
+            {untrackedList}
+          </ul>
+        </div>
+      )}
     </>
   );
 };

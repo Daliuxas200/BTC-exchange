@@ -178,13 +178,17 @@
     position: absolute;
     top: 0;
     left: 0;
-    max-height: 70px;
     border-radius: 5px;
     width: 100%;
-    overflow-y: scroll;
-    scrollbar-color: $color-secondary $color-acent-light;
-    scrollbar-width: thin;
-    scrollbar-gutter: stable;
+    // overflow-y: scroll;
+    // scrollbar-color: $color-secondary $color-acent-light;
+    // scrollbar-width: thin;
+    // scrollbar-gutter: stable;
+    display: none;
+
+    &.active {
+      display: block;
+    }
 
     &__item {
       display: block;
@@ -196,9 +200,16 @@
       display: flex;
       width: 100%;
       border-bottom: 1px solid $color-acent-medium;
+      box-sizing: border-box;
       cursor: pointer;
       &:hover {
         background-color: $color-acent-medium;
+      }
+      &:first-child {
+        border-radius: 5px 5px 0 0;
+      }
+      &:last-child {
+        border-radius: 0 0 5px 5px;
       }
     }
   }
