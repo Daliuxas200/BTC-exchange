@@ -11,9 +11,9 @@
   display: grid;
   grid-template-rows: min-content max-content;
   transition: 0.5s;
+  overflow-y: hidden;
 
   &.closed {
-    overflow-y: hidden;
     max-height: 115px;
     min-height: 0px;
     @include respond(medium) {
@@ -81,6 +81,13 @@
 
   &__info {
     flex: 1 0 100%;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    font-size: 12px;
   }
 }
 
