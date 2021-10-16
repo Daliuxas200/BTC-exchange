@@ -4,6 +4,20 @@ import { formatNumber } from '../helperFunctions';
 
 const Results = ({ input, rates, trackedRates, untrackRate, trackRate }) => {
   const [dropdownToggle, setDropdownToggle] = useState(false);
+  const handleBlur = (e) => {
+    if (
+      e.nativeEvent.explicitOriginalTarget &&
+      e.nativeEvent.explicitOriginalTarget === e.nativeEvent.originalTarget
+    ) {
+      return;
+    }
+
+    if (dropdownToggle) {
+      setTimeout(() => {
+        setDropdownToggle(false);
+      }, 200);
+    }
+  };
 
   const trackedList =
     trackedRates &&
@@ -11,8 +25,10 @@ const Results = ({ input, rates, trackedRates, untrackRate, trackRate }) => {
       const rate = rates.find((r) => r.code === code);
       return (
         <li key={rate.code} className="wrapper results__item">
-          <span>{formatNumber(input * rate.rate_float, rate.code)}</span>
-          <span>{rate.code}</span>
+          <span className="results__item__value">
+            {formatNumber(input * rate.rate_float, rate.code)}
+          </span>
+          <span className="results__item__currency">{rate.code}</span>
           <FaTimes
             className="results__item__remove"
             onClick={() => {
@@ -51,6 +67,7 @@ const Results = ({ input, rates, trackedRates, untrackRate, trackRate }) => {
           <button
             className="wrapper dropdown__button"
             onClick={() => setDropdownToggle(true)}
+            onBlur={(e) => handleBlur(e)}
           >
             <FaPlus />
           </button>
