@@ -10,10 +10,10 @@
   box-shadow: 2px 2px 5px 2px $color-secondary-dark;
   display: grid;
   grid-template-rows: min-content max-content;
-  overflow-y: hidden;
   transition: 0.5s;
 
   &.closed {
+    overflow-y: hidden;
     max-height: 115px;
     min-height: 0px;
     @include respond(medium) {

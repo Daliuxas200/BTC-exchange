@@ -5,7 +5,7 @@ import { parseRates } from '../helperFunctions';
 import { FaEquals } from 'react-icons/fa';
 
 /**
- * TODO For testing only, remove later
+ * ! For testing only
  */
 import testData from '../testingData';
 
@@ -15,6 +15,7 @@ const Calculator = () => {
   const [loading, setLoading] = useState(true);
   const [reloadTrigger, setReloadTrigger] = useState(false);
   const [input, setInput] = useState('');
+  const [updatedTime, setUpdatedTime] = useState(false);
 
   /*
    * Function for fetching the rates and triggering the loading State.
@@ -22,13 +23,14 @@ const Calculator = () => {
   const fetchRates = async () => {
     try {
       setLoading(true);
-      //   const response = await fetch(
-      //     'https://api.coindesk.com/v1/bpi/currentprice.json'
-      //   );
-      //   const data = await response.json();
-      const data = testData;
+      const response = await fetch(
+        'https://api.coindesk.com/v1/bpi/currentprice.json'
+      );
+      const data = await response.json();
+      // const data = testData;
       const parsedRates = parseRates(data);
       setRates(parsedRates);
+      setUpdatedTime(new Date());
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -68,10 +70,7 @@ const Calculator = () => {
    */
   useEffect(() => {
     fetchRates();
-    /**
-     * TODO timer set to 10 minutes so i dont get my IP banned, reset back to 1min before final deployment
-     */
-    const updater = setInterval(fetchRates, 600000);
+    const updater = setInterval(fetchRates, 60000);
     return () => {
       clearInterval(updater);
     };
@@ -105,6 +104,7 @@ const Calculator = () => {
           reload={reload}
           rates={rates}
           trackedRates={trackedRates}
+          updatedTime={updatedTime}
         />
       </div>
       <div className="calculator__center">

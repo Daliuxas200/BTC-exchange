@@ -3,7 +3,7 @@ import Loader from './Loader';
 import { HiRefresh } from 'react-icons/hi';
 import { formatNumber } from '../helperFunctions';
 
-const Details = ({ loading, rates, reload, trackedRates }) => {
+const Details = ({ loading, rates, reload, trackedRates, updatedTime }) => {
   const detailsList =
     trackedRates &&
     trackedRates.map((code) => {
@@ -20,7 +20,19 @@ const Details = ({ loading, rates, reload, trackedRates }) => {
     <div className="details wrapper">
       <h3 className="details__title">BTC Exchange Rates</h3>
       <h4 className="details__subtitle">
-        <span> Last updated 21:41 </span>
+        <div>
+          <span>Last updated - </span>
+          <span>
+            {updatedTime &&
+              `${
+                (updatedTime.getHours() < 10 ? '0' : '') +
+                updatedTime.getHours()
+              }:${
+                (updatedTime.getMinutes() < 10 ? '0' : '') +
+                updatedTime.getMinutes()
+              }`}
+          </span>
+        </div>
         <HiRefresh onClick={reload} />
       </h4>
       {loading ? <Loader /> : detailsList}
