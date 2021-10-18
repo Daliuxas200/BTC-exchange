@@ -3,11 +3,7 @@ import Details from './Details';
 import Results from './Results';
 import { parseRates } from '../helperFunctions';
 import { FaEquals } from 'react-icons/fa';
-
-/**
- * ! For testing only
- */
-// import testData from '../testingData';
+import getRatesUrl from '../urls';
 
 const Calculator = () => {
   const [rates, setRates] = useState([]);
@@ -17,17 +13,11 @@ const Calculator = () => {
   const [input, setInput] = useState('');
   const [updatedTime, setUpdatedTime] = useState(false);
 
-  /*
-   * Function for fetching the rates and triggering the loading State.
-   */
   const fetchRates = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        'https://api.coindesk.com/v1/bpi/currentprice.json'
-      );
+      const response = await fetch(getRatesUrl);
       const data = await response.json();
-      // const data = testData;
       const parsedRates = parseRates(data);
       setRates(parsedRates);
       setUpdatedTime(new Date());
@@ -38,14 +28,8 @@ const Calculator = () => {
     }
   };
 
-  /*
-   * Function for switching the reload state, which triggers the useEffect to fetch new rates and resets the interval counter.
-   */
   const reload = () => setReloadTrigger(!reloadTrigger);
 
-  /*
-   * Checks to see if value is numeric before updating Input field
-   */
   const handleInput = (value) => {
     const numberRegex = /^([0-9]+\.?[0-9]*|\.[0-9]+)$/;
     if (value === '' || numberRegex.test(value)) {
@@ -65,9 +49,6 @@ const Calculator = () => {
     setTrackedRates(newTrackedRates);
   };
 
-  /*
-   * Loads initial Rates after first render, sets interval for data refetch. Can be reset manually by triggering the reloadTrigger state.
-   */
   useEffect(() => {
     fetchRates();
     const updater = setInterval(fetchRates, 60000);
@@ -76,10 +57,6 @@ const Calculator = () => {
     };
   }, [reloadTrigger]);
 
-  /*
-   * Triggers when Rates update to check if Tracked rates have been set
-   * If not, sets all as Tracked, only to later be updated manually
-   */
   useEffect(() => {
     if (rates.length && trackedRates === false) {
       setTrackedRates(rates.map((rate) => rate.code));
